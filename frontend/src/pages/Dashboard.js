@@ -102,7 +102,9 @@ const AnalyticalDashboard = () => {
     const task = calendarEvents.find((event) =>
       moment(event.date).isSame(date, "day")
     );
-    return task ? <span className={styles.taskTitle}>{task.title}</span> : null;
+    return task ? (
+      <span className={styles.hiddenTaskTitle}>{task.title}</span>
+    ) : null;
   };
   // Function to calculate the completion rate over time
   const getCompletionRateData = () => {
