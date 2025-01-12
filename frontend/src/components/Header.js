@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Header.module.css";
 
-const Header = ({ title, onLogout }) => {
+const Header = ({ title }) => {
   const navigate = useNavigate();
 
   const onNavigateToDashboard = () => {
