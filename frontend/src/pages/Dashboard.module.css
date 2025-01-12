@@ -1,0 +1,94 @@
+.dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.mainLayout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  flex: 1;
+  margin-top: 8%;
+  padding-bottom: 5%;
+}
+
+.graphsContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 65%;
+}
+
+.sidebar {
+  flex: 1;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.chartContainer {
+  background-color: #222;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chart {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.upcomingTasksContainer {
+  background-color: #222;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.upcomingTasksContainer ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.upcomingTasksContainer li {
+  margin-bottom: 10px;
+}
+
+.upcomingTasksContainer strong {
+  font-size: 1.1em;
+}
+
+.calendarContainer {
+  background-color: #222;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-calendar {
+  background-color: #1a1a1a;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+}
+
+.react-calendar__tile--active {
+  background-color: #2980b9;
+  color: white;
+}
+
+.react-calendar__tile {
+  background-color: #333;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 2px;
+  font-size: 14px;
+}
+
+.react-calendar__tile:hover {
+  background-color: #2980b9;
+}
