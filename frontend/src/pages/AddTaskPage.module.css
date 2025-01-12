@@ -1,0 +1,119 @@
+.addTaskContainer {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.addTaskHeader {
+  padding: 20px;
+  background-color: #222;
+  color: #fff;
+}
+
+.addTaskMain {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.addTaskMain h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.taskForm {
+  background-color: #222;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formGroup label {
+  font-size: 1rem;
+  color: #fff;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.taskInput,
+.taskSelect,
+.taskTextarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #333;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for input fields */
+.taskInput:hover,
+.taskSelect:hover,
+.taskTextarea:hover {
+  border-color: #9b4dca;
+}
+
+/* Focus effect on input fields */
+.taskInput:focus,
+.taskSelect:focus,
+.taskTextarea:focus {
+  border-color: #9b4dca;
+  outline: none;
+}
+
+/* Styling for textarea */
+.taskTextarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.taskSelect {
+  height: 40px;
+}
+
+.button {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background-color: #9b4dca;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effect for button */
+.button:hover {
+  background-color: #7e3d9f;
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Cancel button */
+button.cancelBtn {
+  background-color: #c0392b;
+}
+
+button.cancelBtn:hover {
+  background-color: #e74c3c;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .taskForm {
+    padding: 15px;
+  }
+
+  .taskInput,
+  .taskSelect,
+  .taskTextarea {
+    font-size: 0.9rem;
+  }
+}

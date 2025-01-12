@@ -7,7 +7,7 @@
 
 /* Body and General Layout */
 body {
-  font-family: "Arial", sans-serif;
+  font-family: sans-serif;
   background-color: #151515; /* Dark background */
   color: #ba68c8; /* Primary text color */
   line-height: 1.6;
@@ -21,8 +21,8 @@ body {
 
 header,
 footer {
-  background-color: #263238; /* Header and footer background */
-  color: #ba68c8; /* Text color */
+  background-color: #222222;
+  color: #ba68c8;
   padding: 1rem;
   text-align: center;
 }
