@@ -19,6 +19,7 @@ import styles from "./Dashboard.module.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
+// Registering required chart elements
 ChartJS.register(
   Title,
   Tooltip,
@@ -34,6 +35,7 @@ ChartJS.register(
 const AnalyticalDashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState(0);
+  const [selectedPriority, setSelectedPriority] = useState("All");
 
   // Fetch task data
   useEffect(() => {
@@ -48,6 +50,12 @@ const AnalyticalDashboard = () => {
       .catch((error) => console.error("Error fetching tasks:", error));
   }, []);
 
+  // Filter tasks by selected priority
+  const filteredTasks = tasks.filter((task) => {
+    if (selectedPriority === "All") return true;
+    return task.priority === selectedPriority;
+  });
+
   // Data for Task Distribution (Bar chart)
   const taskDistributionData = {
     labels: ["Low", "Medium", "High"],
@@ -55,9 +63,9 @@ const AnalyticalDashboard = () => {
       {
         label: "Task Distribution by Priority",
         data: [
-          tasks.filter((task) => task.priority === "Low").length,
-          tasks.filter((task) => task.priority === "Medium").length,
-          tasks.filter((task) => task.priority === "High").length,
+          filteredTasks.filter((task) => task.priority === "Low").length,
+          filteredTasks.filter((task) => task.priority === "Medium").length,
+          filteredTasks.filter((task) => task.priority === "High").length,
         ],
         backgroundColor: ["#8e44ad", "#2980b9", "#e74c3c"],
         borderColor: ["#8e44ad", "#2980b9", "#e74c3c"],
@@ -66,21 +74,7 @@ const AnalyticalDashboard = () => {
     ],
   };
 
-  // Data for Completion Rate (Line chart)
-  const completionRateData = {
-    labels: tasks.map((task) => moment(task.dueDate).format("MMM Do YY")),
-    datasets: [
-      {
-        label: "Completed Tasks",
-        data: tasks.map((task) => (task.status === "Completed" ? 1 : 0)),
-        borderColor: "#2ecc71",
-        backgroundColor: "rgba(46, 204, 113, 0.2)",
-        fill: true,
-      },
-    ],
-  };
-
-  // Filter for Upcoming Deadlines - excluded completed tasks
+  // Filter for Upcoming Deadlines - exclude completed tasks
   const upcomingTasks = tasks.filter((task) => {
     return (
       task.dueDate &&
@@ -95,6 +89,7 @@ const AnalyticalDashboard = () => {
     title: task.title,
   }));
 
+  // Function to add custom tile class for highlighting tasks with deadlines
   const tileClassName = ({ date, view }) => {
     const isTaskDueOnThisDate = calendarEvents.some((event) =>
       moment(event.date).isSame(date, "day")
@@ -102,11 +97,61 @@ const AnalyticalDashboard = () => {
     return isTaskDueOnThisDate ? "highlight-task" : null;
   };
 
+  // Optionally, display the task title on the calendar tile
   const tileContent = ({ date, view }) => {
     const task = calendarEvents.find((event) =>
       moment(event.date).isSame(date, "day")
     );
     return task ? <span className={styles.taskTitle}>{task.title}</span> : null;
+  };
+  // Function to calculate the completion rate over time
+  const getCompletionRateData = () => {
+    const allDates = [];
+    const dateSet = new Set();
+    tasks.forEach((task) => {
+      const date = moment(task.dueDate).format("MMM Do YY");
+      dateSet.add(date);
+    });
+    allDates.push(...dateSet);
+
+    // Sort dates in ascending order
+    const sortedDates = allDates.sort(
+      (a, b) => moment(a, "MMM Do YY") - moment(b, "MMM Do YY")
+    );
+
+    const completionPercentages = sortedDates.map((date) => {
+      const totalTasksForDate = tasks.filter(
+        (task) => moment(task.dueDate).format("MMM Do YY") === date
+      ).length;
+      const completedTasksForDate = tasks.filter(
+        (task) =>
+          task.status === "Completed" &&
+          moment(task.dueDate).format("MMM Do YY") === date
+      ).length;
+
+      const completionPercentage = totalTasksForDate
+        ? (completedTasksForDate / totalTasksForDate) * 100
+        : 0;
+      return completionPercentage;
+    });
+
+    return { labels: sortedDates, completionPercentages };
+  };
+
+  const { labels, completionPercentages } = getCompletionRateData();
+
+  // Data for Completion Rate (Line graph)
+  const completionRateData = {
+    labels: labels, // X-axis labels: Task due dates
+    datasets: [
+      {
+        label: "Completed Tasks (%)",
+        data: completionPercentages,
+        borderColor: "#2ecc71",
+        backgroundColor: "rgba(46, 204, 113, 0.2)",
+        fill: true,
+      },
+    ],
   };
 
   return (
@@ -114,6 +159,35 @@ const AnalyticalDashboard = () => {
       <Header title="Task Management Dashboard" />
       <div className={styles.mainLayout}>
         <div className={styles.graphsContainer}>
+          {/* Priority Filter Buttons */}
+          <div className={styles.priorityFilter}>
+            <button
+              className={styles.filterButton}
+              onClick={() => setSelectedPriority("Low")}
+            >
+              Low Priority
+            </button>
+            <button
+              className={styles.filterButton}
+              onClick={() => setSelectedPriority("Medium")}
+            >
+              Medium Priority
+            </button>
+            <button
+              className={styles.filterButton}
+              onClick={() => setSelectedPriority("High")}
+            >
+              High Priority
+            </button>
+            <button
+              className={styles.filterButton}
+              onClick={() => setSelectedPriority("All")}
+            >
+              All Tasks
+            </button>
+          </div>
+
+          {/* Task Distribution Bar Chart */}
           <div className={styles.chartContainer}>
             <h3>Task Distribution by Priority</h3>
             <div className={styles.chart}>
@@ -121,6 +195,7 @@ const AnalyticalDashboard = () => {
             </div>
           </div>
 
+          {/* Completion Rate Line Chart */}
           <div className={styles.chartContainer}>
             <h3>Completion Rate Over Time</h3>
             <div className={styles.chart}>
@@ -129,7 +204,9 @@ const AnalyticalDashboard = () => {
           </div>
         </div>
 
+        {/* Sidebar for Upcoming Tasks and Calendar */}
         <div className={styles.sidebar}>
+          {/* Upcoming Deadlines List */}
           <div className={styles.upcomingTasksContainer}>
             <h3>Upcoming Deadlines</h3>
             {upcomingTasks.length > 0 ? (
