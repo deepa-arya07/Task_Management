@@ -97,27 +97,3 @@ header h1,
 footer p {
   color: #ba68c8; /* Bright color for emphasis */
 }
-
-/* Cards */
-.card {
-  background-color: #263238; /* Card background */
-  color: #ba68c8; /* Card text */
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.card h3 {
-  color: #9553a0; /* Accent color for card titles */
-}
-
-/* Links */
-a {
-  color: #ba68c8;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #9553a0;
-  text-decoration: underline;
-}

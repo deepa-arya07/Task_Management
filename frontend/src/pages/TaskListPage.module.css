@@ -1,82 +1,145 @@
 .taskListContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: left;
+  min-height: 100vh;
+  background-color: #1c1c1c;
 }
 
-.taskListContainer h2 {
+.taskListHeading {
   font-size: 2rem;
   color: #fff;
   margin-bottom: 20px;
 }
 
-.taskList {
+.sortAndFilterContainer {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.sortLabel,
+.priorityFilterLabel {
+  color: #fff;
+  margin-right: 10px;
+}
+
+.sortDropdown,
+.priorityFilterDropdown {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  background-color: #333;
+  color: #fff;
+  width: 200px;
+}
+
+.taskList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
-  justify-content: flex-start;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .taskCard {
-  background-color: #2e2e2e;
-  color: white;
+  background-color: #333;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  color: #fff;
   display: flex;
   flex-direction: column;
-}
-
-.taskCard:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  justify-content: space-between;
+  height: 250px;
 }
 
 .taskCard h3 {
   font-size: 1.5rem;
   margin-bottom: 10px;
-  font-weight: bold;
+  color: #9b4dca;
 }
 
 .taskCard p {
   margin-bottom: 10px;
-  font-size: 1rem;
-  line-height: 1.5;
 }
 
+/* Task Action Buttons */
 .taskActions {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
-  justify-content: flex-start;
+  justify-content: space-between;
+  margin-top: auto;
 }
 
-button {
-  padding: 10px 20px;
+.taskActions button {
+  padding: 8px 16px;
   background-color: #9b4dca;
-  color: white;
   border: none;
   border-radius: 5px;
+  color: #fff;
   cursor: pointer;
-  font-size: 1rem;
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+.taskActions button:hover {
   background-color: #7e3d9f;
 }
 
-@media (max-width: 768px) {
-  .taskList {
-    justify-content: flex-start;
-  }
+.sortContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  align-items: center;
+}
 
-  .taskCard {
-    width: 100%;
-  }
+.sortLabel {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.priorityFilterLabel {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.sortSelect,
+.prioritySelect {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #333;
+  color: #fff;
+  width: 250px;
+  cursor: pointer;
+}
+
+.sortSelect:hover,
+.prioritySelect:hover {
+  border-color: #9b4dca;
+}
+
+.sortSelect:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.sortButton {
+  background-color: #9b4dca;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sortButton:hover {
+  background-color: #7e3d9f;
 }
