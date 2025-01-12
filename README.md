@@ -1,6 +1,6 @@
 # Task Management App
 
-![image](https://github.com/user-attachments/assets/e7d6b538-164b-498e-ac88-1f0092bac3e8)
+![image](https://github.com/user-attachments/assets/3345076a-06df-4393-a2aa-ef58317c9c3a)
 ![image](https://github.com/user-attachments/assets/4b08f925-608d-4415-9148-823269a2975b)
 ![image](https://github.com/user-attachments/assets/f8e70611-fb22-4253-8cea-471d43ffc28e)
 
@@ -29,6 +29,7 @@ Make sure you have the following installed before starting the application:
 ```bash
 git clone https://github.com/your-username/task-management-app.git
 cd task-management-app
+cd frontend
 npm i 
 npm start
 cd backend
