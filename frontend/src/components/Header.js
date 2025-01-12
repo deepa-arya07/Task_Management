@@ -12,6 +12,9 @@ const Header = ({ title, onLogout }) => {
   const onNavigateToHome = () => {
     navigate("/");
   };
+  const onTaskList = () => {
+    navigate("/task-list");
+  };
 
   return (
     <header className={styles.headerContainer}>
@@ -23,15 +26,19 @@ const Header = ({ title, onLogout }) => {
           Home
         </button>
 
+        <button className={styles.headerButton} onClick={onTaskList}>
+          Your Task List
+        </button>
+
         {/* Go to Dashboard button */}
         <button className={styles.headerButton} onClick={onNavigateToDashboard}>
           Go to Dashboard
         </button>
 
         {/* Logout button */}
-        <button className={styles.headerButton} onClick={onLogout}>
+        {/* <button className={styles.headerButton} onClick={onLogout}>
           Logout
-        </button>
+        </button> */}
       </div>
     </header>
   );

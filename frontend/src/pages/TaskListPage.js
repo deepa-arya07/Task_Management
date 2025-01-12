@@ -4,11 +4,18 @@ import EditTaskPage from "./EditTaskPage";
 import styles from "./TaskListPage.module.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
+import Swal from "sweetalert2";
 const TaskListPage = () => {
   const [tasks, setTasks] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [taskData, setTaskData] = useState({
+    title: "",
+    description: "",
+    priority: "Low",
+    dueDate: "",
+    status: "Pending",
+  });
   const [sortOption, setSortOption] = useState("dueDateAsc");
   const [priorityFilter, setPriorityFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,21 +61,20 @@ const TaskListPage = () => {
     return sortedTasks;
   };
 
-  const handleEditTask = (task) => {
-    setSelectedTask(task);
-    setModalOpen(true);
-  };
-
-  const handleUpdateTask = (updatedTask) => {
-    setModalOpen(false);
-    console.log(updatedTask);
-  };
-
   const handleDeleteTask = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this task?"
-    );
-    if (confirmDelete) {
+    const confirmDelete = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    // Proceed if the user confirmed the deletion
+    if (confirmDelete.isConfirmed) {
       try {
         const response = await fetch(`http://localhost:5000/api/tasks/${id}`, {
           method: "DELETE",
@@ -76,13 +82,79 @@ const TaskListPage = () => {
 
         if (response.ok) {
           setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
-          alert("Task deleted successfully!");
+          Swal.fire({
+            title: "Deleted!",
+            text: "The task has been deleted.",
+            icon: "success",
+            confirmButtonColor: "#4CAF50",
+          });
         } else {
-          console.error("Error deleting task");
+          Swal.fire({
+            title: "Error!",
+            text: "There was an error deleting the task.",
+            icon: "error",
+            confirmButtonColor: "#c0392b",
+          });
         }
       } catch (error) {
         console.error("Error:", error);
+        Swal.fire({
+          title: "Error!",
+          text: "There was an error connecting to the server.",
+          icon: "error",
+          confirmButtonColor: "#c0392b",
+        });
       }
+    }
+  };
+
+  // Handle form field changes
+  const handleChange = (field, value) => {
+    setTaskData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
+
+  // Open the modal and set the task data to be edited
+  const handleEditTask = (task) => {
+    setSelectedTask(task);
+    setTaskData({
+      title: task.title,
+      description: task.description,
+      priority: task.priority,
+      dueDate: task.dueDate.split("T")[0],
+      status: task.status,
+    });
+    setModalOpen(true);
+  };
+
+  const handleUpdateTask = async (updatedTask) => {
+    setModalOpen(false);
+    const updatedTaskData = { ...updatedTask };
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/tasks/${updatedTaskData._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedTaskData),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        // Handle task update logic here
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task._id === data._id ? { ...task, ...data } : task
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error updating task:", error);
     }
   };
 
@@ -159,8 +231,9 @@ const TaskListPage = () => {
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
           onSubmit={handleUpdateTask}
-          taskData={selectedTask || {}}
-          onChange={() => {}}
+          taskData={taskData}
+          onChange={handleChange}
+          id={selectedTask?._id}
         />
       </div>
       <Footer />

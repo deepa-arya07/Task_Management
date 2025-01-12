@@ -41,7 +41,7 @@ const AddTaskPage = () => {
           text: "Your task has been successfully added.",
           icon: "success",
           confirmButtonColor: "#9b4dca",
-          confirmButtonText: "Go to Dashboard",
+          confirmButtonText: "Your Task List",
         }).then((result) => {
           if (result.isConfirmed) {
             navigate("/task-list");
