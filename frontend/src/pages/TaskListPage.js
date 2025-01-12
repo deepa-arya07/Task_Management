@@ -9,17 +9,18 @@ const TaskListPage = () => {
   const [tasks, setTasks] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [sortOption, setSortOption] = useState("dueDateAsc"); // Default sort: Ascending by Due Date
-  const [priorityFilter, setPriorityFilter] = useState("All"); // Default filter for priority
+  const [sortOption, setSortOption] = useState("dueDateAsc");
+  const [priorityFilter, setPriorityFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:5000/api/tasks")
       .then((response) => response.json())
       .then((data) => {
-        setTasks(sortTasks(data, sortOption, priorityFilter));
+        setTasks(sortTasks(data, sortOption, priorityFilter, searchQuery));
       })
       .catch((error) => console.error("Error fetching tasks:", error));
-  }, [sortOption, priorityFilter]); // Re-fetch and sort tasks when the sorting or filtering changes
+  }, [sortOption, priorityFilter, searchQuery]);
 
   const sortTasks = (tasks, sortBy, filterByPriority) => {
     let sortedTasks = [...tasks];
@@ -29,7 +30,13 @@ const TaskListPage = () => {
         (task) => task.priority === filterByPriority
       );
     }
-
+    if (searchQuery) {
+      sortedTasks = sortedTasks.filter(
+        (task) =>
+          task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          task.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
     if (sortBy === "dueDateAsc") {
       sortedTasks.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
     } else if (sortBy === "dueDateDesc") {
@@ -84,6 +91,16 @@ const TaskListPage = () => {
       <Header title="My task list" />
       <div className={styles.taskListContainer}>
         <h2 className={styles.taskListHeading}>Task List</h2>
+        {/* Search Bar */}
+        <div className={styles.searchContainer}>
+          <input
+            type="text"
+            placeholder="Search tasks by title or description..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={styles.searchInput}
+          />
+        </div>
         <div className={styles.sortAndFilterContainer}>
           <label htmlFor="sortBy" className={styles.sortLabel}>
             Sort By Due Date:
